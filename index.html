@@ -140,6 +140,129 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-饥荒联机版Linux专用服务器快读搭建向导" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/27/饥荒联机版Linux专用服务器快读搭建向导/">饥荒联机版Linux专用服务器快读搭建向导</a>
+    </h1>
+  
+
+        
+        <a href="/2019/09/27/饥荒联机版Linux专用服务器快读搭建向导/" class="archive-article-date">
+  	<time datetime="2019-09-27T01:43:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>原文章地址：<a href="https://forums.kleientertainment.com/forums/topic/64441-dedicated-server-quick-setup-guide-linux/" target="_blank" rel="noopener">https://forums.kleientertainment.com/forums/topic/64441-dedicated-server-quick-setup-guide-linux/</a></p>
+<p>本文章为原文章的翻译，并添加了部分额外内容。</p>
+</blockquote>
+<p>这篇指南将会帮助你快速在Ubuntu上搭建属于你的饥荒联机版专用服务器。</p>
+<h1 id="一、安装依赖"><a href="#一、安装依赖" class="headerlink" title="一、安装依赖"></a>一、安装依赖</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">对于64位的系统需要执行：</span><br><span class="line">sudo apt install libstdc++6:i386 libgcc1:i386 libcurl4-gnutls-dev:i386 lib32gcc1</span><br><span class="line">对于32位的系统需要执行：</span><br><span class="line">sudo apt install libstdc++6 libgcc1 libcurl4-gnutls-dev</span><br></pre></td></tr></table></figure>
+
+<h1 id="二、安装Steamcmd"><a href="#二、安装Steamcmd" class="headerlink" title="二、安装Steamcmd"></a>二、安装Steamcmd</h1><p>你可以依照以下网址的指引下载并安装Steamcmd</p>
+<p><a href="https://developer.valvesoftware.com/wiki/SteamCMD#Linux" target="_blank" rel="noopener">https://developer.valvesoftware.com/wiki/SteamCMD#Linux</a></p>
+<p>这篇指南会默认在你当前所在目录安装Steamcmd，你可以跳过里面有关创建用户的步骤。</p>
+<p>或者是直接执行以下命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/steamcmd/</span><br><span class="line"><span class="built_in">cd</span> ~/steamcmd/</span><br><span class="line">wget <span class="string">"https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz"</span></span><br><span class="line">tar -xvzf steamcmd_linux.tar.gz</span><br></pre></td></tr></table></figure>
+
+<h1 id="三、配置并下载服务器设置"><a href="#三、配置并下载服务器设置" class="headerlink" title="三、配置并下载服务器设置"></a>三、配置并下载服务器设置</h1><p>1、从Steam中打开Don’t Starve Together，点击 <strong>开始游戏</strong> 。</p>
+<p>2、点击 <strong>账户信息</strong> 。</p>
+<p>3、在 <strong>账号信息</strong> 界面点击上方的游戏，然后点击 <strong>Don’t Starve Together Servers</strong> 按钮。</p>
+<p>4、如果你还没有配置过服务器，则点击下方的 <strong>添加新服务器</strong> 。</p>
+<p>5、点击 <strong>配置服务器</strong> 按钮，你可以修改一些服务器相关的配置。然后点击 <strong>下载设置</strong> 。如果无法下载，右键点击 <strong>复制网页URL</strong> 并在浏览器中进行操作。</p>
+<p>6、在服务器的用户根目录创建 <strong>.klei/DoNotStarveTogether</strong> 路径， 并将下载的 <strong>MyDediServer</strong> 压缩包解压到该文件夹中。此时目录结构应该为<strong>.klei/DoNotStarveTogether/MyDediServer</strong>，该文件夹下有cluster.ini、cluster_token.txt、Master文件夹和Caves文件夹。</p>
+<h1 id="四、创建安装和启动服务器脚本"><a href="#四、创建安装和启动服务器脚本" class="headerlink" title="四、创建安装和启动服务器脚本"></a>四、创建安装和启动服务器脚本</h1><p>下载该脚本</p>
+<p><a href="https://accounts.klei.com/assets/gamesetup/linux/run_dedicated_servers.sh" target="_blank" rel="noopener">https://accounts.klei.com/assets/gamesetup/linux/run_dedicated_servers.sh</a></p>
+<p>或新建文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi run_dedicated_servers.sh</span><br></pre></td></tr></table></figure>
+
+<p>并复制以下内容</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">steamcmd_dir=<span class="string">"<span class="variable">$HOME</span>/steamcmd"</span> <span class="comment"># Steamcmdd的安装路径</span></span><br><span class="line">install_dir=<span class="string">"<span class="variable">$HOME</span>/dontstarvetogether_dedicated_server"</span> <span class="comment"># 饥荒联机版的安装路径</span></span><br><span class="line">cluster_name=<span class="string">"MyDediServer"</span> <span class="comment"># 存档的名称，即在.klei中创建的文件夹名称</span></span><br><span class="line">dontstarve_dir=<span class="string">"<span class="variable">$HOME</span>/.klei/DoNotStarveTogether"</span> <span class="comment"># 存档存放的位置</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> fail()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">echo</span> Error: <span class="string">"<span class="variable">$@</span>"</span> &gt;&amp;2</span><br><span class="line">	<span class="built_in">exit</span> 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> check_for_file()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> [ ! -e <span class="string">"<span class="variable">$1</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">		fail <span class="string">"Missing file: <span class="variable">$1</span>"</span></span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> <span class="string">"<span class="variable">$steamcmd_dir</span>"</span> || fail <span class="string">"Missing <span class="variable">$steamcmd_dir</span> directory!"</span></span><br><span class="line"></span><br><span class="line">check_for_file <span class="string">"steamcmd.sh"</span></span><br><span class="line">check_for_file <span class="string">"<span class="variable">$dontstarve_dir</span>/<span class="variable">$cluster_name</span>/cluster.ini"</span></span><br><span class="line">check_for_file <span class="string">"<span class="variable">$dontstarve_dir</span>/<span class="variable">$cluster_name</span>/cluster_token.txt"</span></span><br><span class="line">check_for_file <span class="string">"<span class="variable">$dontstarve_dir</span>/<span class="variable">$cluster_name</span>/Master/server.ini"</span></span><br><span class="line">check_for_file <span class="string">"<span class="variable">$dontstarve_dir</span>/<span class="variable">$cluster_name</span>/Caves/server.ini"</span></span><br><span class="line"></span><br><span class="line">./steamcmd.sh +force_install_dir <span class="string">"<span class="variable">$install_dir</span>"</span> +login anonymous +app_update 343050 validate +quit</span><br><span class="line"></span><br><span class="line">check_for_file <span class="string">"<span class="variable">$install_dir</span>/bin"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> <span class="string">"<span class="variable">$install_dir</span>/bin"</span> || fail</span><br><span class="line"></span><br><span class="line">run_shared=(./dontstarve_dedicated_server_nullrenderer)</span><br><span class="line">run_shared+=(-console)</span><br><span class="line">run_shared+=(-cluster <span class="string">"<span class="variable">$cluster_name</span>"</span>)</span><br><span class="line">run_shared+=(-monitor_parent_process $$)</span><br><span class="line"></span><br><span class="line"><span class="string">"<span class="variable">$&#123;run_shared[@]&#125;</span>"</span> -shard Caves  | sed <span class="string">'s/^/Caves:  /'</span> &amp;</span><br><span class="line"><span class="string">"<span class="variable">$&#123;run_shared[@]&#125;</span>"</span> -shard Master | sed <span class="string">'s/^/Master: /'</span></span><br></pre></td></tr></table></figure>
+
+<p>为下载或新建的 <strong>run_dedicated_servers.sh</strong> 文件添加当前用户的运行权限</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod u+x run_dedicated_servers.sh</span><br></pre></td></tr></table></figure>
+
+<h1 id="五、运行脚本自动安装并启动服务器"><a href="#五、运行脚本自动安装并启动服务器" class="headerlink" title="五、运行脚本自动安装并启动服务器"></a>五、运行脚本自动安装并启动服务器</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./run_dedicated_servers.sh</span><br></pre></td></tr></table></figure>
+
+<h1 id="六、如何下载并启用mod"><a href="#六、如何下载并启用mod" class="headerlink" title="六、如何下载并启用mod"></a>六、如何下载并启用mod</h1><p>在执行完以上步骤后，你得到了一个纯净的饥荒联机版专用服务器，你可能还想为这个服务器添加一些mod。</p>
+<h2 id="1、下载mod"><a href="#1、下载mod" class="headerlink" title="1、下载mod"></a>1、下载mod</h2><p>服务器的mod下载设置文件 <strong>dedicated_server_mods_setup.lua</strong> 在安装路径的mods文件夹中，本例的路径为 <strong>~/dontstarvetogether_dedicated_server/mods</strong> ，添加mod的有两种方式</p>
+<h3 id="通过添加创意工坊mod的ID进行单个添加"><a href="#通过添加创意工坊mod的ID进行单个添加" class="headerlink" title="通过添加创意工坊mod的ID进行单个添加"></a>通过添加创意工坊mod的ID进行单个添加</h3><p>如 <strong>Combined Status</strong> 状态显示 的Steam创意工坊地址为 <strong><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=376333686" target="_blank" rel="noopener">https://steamcommunity.com/sharedfiles/filedetails/?id=376333686</a></strong>，则该mod的ID为 <strong>376333686</strong>。</p>
+<p>在 <strong>dedicated_server_mods_setup.lua</strong> 文件尾部添加 <strong>ServerModSetup(“350811795”)</strong> 即可下载该mod。</p>
+<h3 id="通过添加创意工坊mod合集的ID进行批量添加"><a href="#通过添加创意工坊mod合集的ID进行批量添加" class="headerlink" title="通过添加创意工坊mod合集的ID进行批量添加"></a>通过添加创意工坊mod合集的ID进行批量添加</h3><p>你也可以通过创建合集来批量下载mod</p>
+<p>如  <strong>Kantai Collection</strong> 舰娘合集 的创意工会合集地址为 <strong><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=728810004" target="_blank" rel="noopener">https://steamcommunity.com/sharedfiles/filedetails/?id=728810004</a></strong>。</p>
+<p>在 <strong>dedicated_server_mods_setup.lua</strong> 文件尾部添加 <strong>ServerModCollectionSetup(“728810004”)</strong> 即可下载该合计内的所有mod。</p>
+<p><strong>NOTE：</strong>该方法只对合集内包含的mod有效，对于软连接的其他mod合集无效</p>
+<h2 id="2、启用和设置mod"><a href="#2、启用和设置mod" class="headerlink" title="2、启用和设置mod"></a>2、启用和设置mod</h2><p>对于如何设置和启动mod，建议在本地电脑上直接搭建一个只含有且调整完mod选项服务器mod的本地服务器，创建完后即可关闭。</p>
+<p>在 <strong>我的电脑\文档\klei\DoNotStarveTogether[数字]\Cluster_1\Master</strong> 中复制 <strong>modoverrides.lua</strong> 文件到服务器对于的 <strong>Master</strong> 和 <strong>Cave</strong> 存档文件中，就可以完成服务器mod的启用和配置。其中Cluster_1是你创建的本地服务器存档。</p>
+<h1 id="七、如何将地表服务器和洞穴服务器运行在两台服务器上"><a href="#七、如何将地表服务器和洞穴服务器运行在两台服务器上" class="headerlink" title="七、如何将地表服务器和洞穴服务器运行在两台服务器上"></a>七、如何将地表服务器和洞穴服务器运行在两台服务器上</h1><p>饥荒联机版专用服务器对服务器性能要求不高，但如果在一台服务器上同时运行地表服务器和洞穴服务器难免还是会增加服务器的负担和延迟，对于一些只有1核1G或2G内存的云服务器则完全不能同时运行。</p>
+<p>所以将地表服务器和洞穴服务器分别运行在两台服务器上是一个比较好的选择。</p>
+<p>只需修改存档下的cluster.ini文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[SHARD]</span><br><span class="line">shard_enabled = true</span><br><span class="line">bind_ip = 0.0.0.0</span><br><span class="line">master_ip = 地表服务器的IP</span><br><span class="line">master_port = 地表服务器的端口，一般为10900或10899</span><br><span class="line">cluster_key = 随意设定</span><br></pre></td></tr></table></figure>
+
+<p>同时修改  <strong>run_dedicated_servers.sh</strong> 文件最下面的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;$&#123;run_shared[@]&#125;&quot; -shard Caves  | sed &apos;s/^/Caves:  /&apos; &amp;</span><br><span class="line">&quot;$&#123;run_shared[@]&#125;&quot; -shard Master | sed &apos;s/^/Master: /&apos;</span><br></pre></td></tr></table></figure>
+
+<p>如果是地表服务器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;$&#123;run_shared[@]&#125;&quot; -shard Master | sed &apos;s/^/Master: /&apos;</span><br></pre></td></tr></table></figure>
+
+<p>如果是洞穴服务器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;$&#123;run_shared[@]&#125;&quot; -shard Caves  | sed &apos;s/^/Caves:  /&apos;</span><br></pre></td></tr></table></figure>
+
+<h1 id="八、Q-amp-A"><a href="#八、Q-amp-A" class="headerlink" title="八、Q&amp;A"></a>八、Q&amp;A</h1><h2 id="1、服务器的存档位置在哪？"><a href="#1、服务器的存档位置在哪？" class="headerlink" title="1、服务器的存档位置在哪？"></a>1、服务器的存档位置在哪？</h2><p> <strong>~/.klei/DoNotStarveTogether/MyDediServer</strong> ，其中 <strong>.klei</strong> 是个隐藏文件夹，ls命令无法显示，直接 <strong>cd ~/.klei</strong> 即可。</p>
+<h2 id="2、没有-klei-和-DoNotStarveTogether-文件夹"><a href="#2、没有-klei-和-DoNotStarveTogether-文件夹" class="headerlink" title="2、没有 .klei 和 DoNotStarveTogether 文件夹"></a>2、没有 <strong>.klei</strong> 和 <strong>DoNotStarveTogether</strong> 文件夹</h2><p>手动在当前用户根目录下创建</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p .klei/DoNotStarveTogether</span><br></pre></td></tr></table></figure>
+
+<h2 id="3、怎么设置世界属性？"><a href="#3、怎么设置世界属性？" class="headerlink" title="3、怎么设置世界属性？"></a>3、怎么设置世界属性？</h2><p>同启用和设置mod，在本地电脑创建好世界后，将存档内的 <strong>leveldataoverride.lua</strong> 和 <strong>worldgenoverride.lua</strong> 复制到服务器对应的存档位置中。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/09/27/饥荒联机版Linux专用服务器快读搭建向导/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-搭建Hexo的一些小事" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
