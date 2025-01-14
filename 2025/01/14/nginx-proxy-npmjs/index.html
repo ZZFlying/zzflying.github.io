@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="nginx需要启用–with-http_sub_module选项，使用nginx -V查看是否启用 反向代理配置如下： 1234567891011121314151617181920212223server &#123;    listen     443 ssl;    listen [::]:443 ssl;    # 监听的域名    server_name  your.domian.com">
+<meta name="description" content="1. 反向代理上游仓库nginx配置如下： 12345678910location &#x2F; &#123;    proxy_pass https:&#x2F;&#x2F;registry.npmjs.org&#x2F;;    proxy_set_header Accept-Encoding &quot;&quot;;    proxy_set_header Host registry.npmjs.org;    proxy_se">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx反向代理registry.npmjs.org">
 <meta property="og:url" content="https://zzflying.github.io/2025/01/14/nginx-proxy-npmjs/index.html">
 <meta property="og:site_name" content="Sagrada">
-<meta property="og:description" content="nginx需要启用–with-http_sub_module选项，使用nginx -V查看是否启用 反向代理配置如下： 1234567891011121314151617181920212223server &#123;    listen     443 ssl;    listen [::]:443 ssl;    # 监听的域名    server_name  your.domian.com">
+<meta property="og:description" content="1. 反向代理上游仓库nginx配置如下： 12345678910location &#x2F; &#123;    proxy_pass https:&#x2F;&#x2F;registry.npmjs.org&#x2F;;    proxy_set_header Accept-Encoding &quot;&quot;;    proxy_set_header Host registry.npmjs.org;    proxy_se">
 <meta property="og:locale">
 <meta property="article:published_time" content="2025-01-14T02:59:25.000Z">
-<meta property="article:modified_time" content="2025-01-14T07:03:02.199Z">
+<meta property="article:modified_time" content="2025-01-14T07:35:29.532Z">
 <meta property="article:author" content="Sagrada">
 <meta property="article:tag" content="nginx">
 <meta name="twitter:card" content="summary">
@@ -320,9 +320,24 @@
       
 
       
-        <p>nginx需要启用–with-http_sub_module选项，使用<code>nginx -V</code>查看是否启用</p>
-<p>反向代理配置如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen     443 ssl;</span><br><span class="line">    listen [::]:443 ssl;</span><br><span class="line">    # 监听的域名</span><br><span class="line">    server_name  your.domian.com;</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass https://registry.npmjs.org/;</span><br><span class="line">        # 清空Accept-Encoding避免结果gzip，sub_filter读取到字节流无法生效</span><br><span class="line">        proxy_set_header Accept-Encoding &quot;&quot;;</span><br><span class="line">        proxy_set_header Host registry.npmjs.org;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line">        proxy_cache_bypass $http_upgrade;</span><br><span class="line">        proxy_redirect off;</span><br><span class="line">        # 更改所有匹配的结果</span><br><span class="line">        sub_filter_once off;</span><br><span class="line">        # npm返回时的content-type类型为application/vnd.npm.install-v1+json</span><br><span class="line">        sub_filter_types application/vnd.npm.install-v1+json application/json;</span><br><span class="line">        # 将info返回结果中的tarball地址更改为你的地址</span><br><span class="line">        sub_filter &#x27;registry.npmjs.org&#x27; &#x27;your.domian.com&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h1 id="1-反向代理上游仓库"><a href="#1-反向代理上游仓库" class="headerlink" title="1. 反向代理上游仓库"></a>1. 反向代理上游仓库</h1><p>nginx配置如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">    proxy_pass https://registry.npmjs.org/;</span><br><span class="line">    proxy_set_header Accept-Encoding &quot;&quot;;</span><br><span class="line">    proxy_set_header Host registry.npmjs.org;</span><br><span class="line">    proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">    proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line">    proxy_cache_bypass $http_upgrade;</span><br><span class="line">    proxy_redirect off;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-设置pnpm的仓库源"><a href="#2-设置pnpm的仓库源" class="headerlink" title="2. 设置pnpm的仓库源"></a>2. 设置pnpm的仓库源</h1><p>修改仓库源的地址</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ pnpm config <span class="built_in">set</span> registry https://your.domian.com</span><br><span class="line">$ pnpm config get registry</span><br><span class="line">https://your.domian.com</span><br></pre></td></tr></table></figure>
+<p>测试一下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">$ pnpm info react</span><br><span class="line">react@19.0.0 | MIT | deps: none | versions: 2143</span><br><span class="line">React is a JavaScript library <span class="keyword">for</span> building user interfaces.</span><br><span class="line">https://react.dev/</span><br><span class="line"></span><br><span class="line">keywords: react</span><br><span class="line"></span><br><span class="line">dist</span><br><span class="line">.tarball: https://registry.npmjs.org/react/-/react-19.0.0.tgz</span><br><span class="line">.shasum: 6e1969251b9f108870aa4bff37a0ce9ddfaaabdd</span><br><span class="line">.integrity: sha512-V8AVnmPIICiWpGfm6GLzCR/W5FXLchHop40W4nXBmdlEceh16rCN8O8LNWm5bh5XUX91fh7KpA+W0TgMKmgTpQ==</span><br><span class="line">.unpackedSize: 237.5 kB</span><br><span class="line"></span><br><span class="line">maintainers:</span><br><span class="line">- gnoff &lt;jcs.gnoff@gmail.com&gt;</span><br><span class="line">- fb &lt;opensource+npm@fb.com&gt;</span><br><span class="line">- sophiebits &lt;npm@sophiebits.com&gt;</span><br><span class="line">- react-bot &lt;react-core@meta.com&gt;</span><br><span class="line"></span><br><span class="line">dist-tags:</span><br><span class="line">beta: 19.0.0-beta-26f2496093-20240514               latest: 19.0.0</span><br><span class="line">canary: 19.1.0-canary-cabd8a0e-20250113             next: 19.1.0-canary-cabd8a0e-20250113</span><br><span class="line">experimental: 0.0.0-experimental-cabd8a0e-20250113  rc: 19.0.0-rc.1</span><br><span class="line"></span><br><span class="line">published a month ago by react-bot &lt;react-core@meta.com&gt;</span><br></pre></td></tr></table></figure>
+
+<p>此时pnpm能够获取到包信息，但由于实际安装时是从<code>.tarball</code>中获取包的实际下载地址，还需要对结果进一步处理</p>
+<h1 id="3-修改info的响应信息"><a href="#3-修改info的响应信息" class="headerlink" title="3. 修改info的响应信息"></a>3. 修改info的响应信息</h1><p>nginx需要启用ngx_http_sub_module模块，使用<code>nginx -V</code>查看是否启用–with-http_sub_module</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ nginx -V</span><br><span class="line">...</span><br><span class="line">configure arguments: --with-http_sub_module</span><br></pre></td></tr></table></figure>
+
+<p>修改配置如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">    proxy_pass https://registry.npmjs.org/;</span><br><span class="line">    # 清空Accept-Encoding避免响应gzip，sub_filter读取到字节流无法生效</span><br><span class="line">    proxy_set_header Accept-Encoding &quot;&quot;;</span><br><span class="line">    proxy_set_header Host registry.npmjs.org;</span><br><span class="line">    proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">    proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line">    proxy_cache_bypass $http_upgrade;</span><br><span class="line">    proxy_redirect off;</span><br><span class="line">    # 更改所有匹配的结果</span><br><span class="line">    sub_filter_once off;</span><br><span class="line">    # pnpm install时返回的content-type类型为application/vnd.npm.install-v1+json</span><br><span class="line">    sub_filter_types application/vnd.npm.install-v1+json application/json;</span><br><span class="line">    # 将info返回结果中的tarball地址更改为你的地址</span><br><span class="line">    sub_filter &#x27;https://registry.npmjs.org/&#x27; &#x27;https://your.domian.com/&#x27;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再次测试下，可以看到<code>.tarball</code>的地址被替换为<code>https://your.domian.com/</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ pnpm info react</span><br><span class="line">react@19.0.0 | MIT | deps: none | versions: 2143</span><br><span class="line">React is a JavaScript library <span class="keyword">for</span> building user interfaces.</span><br><span class="line">https://react.dev/</span><br><span class="line"></span><br><span class="line">keywords: react</span><br><span class="line"></span><br><span class="line">dist</span><br><span class="line">.tarball: https://your.domian.com/react/-/react-19.0.0.tgz</span><br></pre></td></tr></table></figure>
+
       
     </div>
     
@@ -396,8 +411,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -457,6 +481,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8A%E6%B8%B8%E4%BB%93%E5%BA%93"><span class="nav-number">1.</span> <span class="nav-text">1. 反向代理上游仓库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E8%AE%BE%E7%BD%AEpnpm%E7%9A%84%E4%BB%93%E5%BA%93%E6%BA%90"><span class="nav-number">2.</span> <span class="nav-text">2. 设置pnpm的仓库源</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E4%BF%AE%E6%94%B9info%E7%9A%84%E5%93%8D%E5%BA%94%E4%BF%A1%E6%81%AF"><span class="nav-number">3.</span> <span class="nav-text">3. 修改info的响应信息</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
