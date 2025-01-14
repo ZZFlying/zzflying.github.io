@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="123456789101112131415161718server &#123;    listen     443 ssl;    listen [::]:443 ssl;    server_name  _;    location &#x2F; &#123;        proxy_pass https:&#x2F;&#x2F;registry.npmjs.org&#x2F;;        proxy_set_header">
+<meta name="description" content="nginx需要启用–with-http_sub_module选项，使用nginx -V查看是否启用 反向代理配置如下： 1234567891011121314151617181920212223server &#123;    listen     443 ssl;    listen [::]:443 ssl;    # 监听的域名    server_name  your.domian.com">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx反向代理registry.npmjs.org">
 <meta property="og:url" content="https://zzflying.github.io/2025/01/14/nginx-proxy-npmjs/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="123456789101112131415161718server &#123;    listen     443 ssl;    listen [::]:443 ssl;    server_name  _;    location &#x2F; &#123;        proxy_pass https:&#x2F;&#x2F;registry.npmjs.org&#x2F;;        proxy_set_header">
+<meta property="og:site_name" content="Sagrada">
+<meta property="og:description" content="nginx需要启用–with-http_sub_module选项，使用nginx -V查看是否启用 反向代理配置如下： 1234567891011121314151617181920212223server &#123;    listen     443 ssl;    listen [::]:443 ssl;    # 监听的域名    server_name  your.domian.com">
 <meta property="og:locale">
 <meta property="article:published_time" content="2025-01-14T02:59:25.000Z">
-<meta property="article:modified_time" content="2025-01-14T03:09:03.577Z">
+<meta property="article:modified_time" content="2025-01-14T07:03:02.199Z">
 <meta property="article:author" content="Sagrada">
 <meta property="article:tag" content="nginx">
 <meta name="twitter:card" content="summary">
@@ -126,7 +126,7 @@
 
 
 
-  <title>Nginx反向代理registry.npmjs.org | Hexo</title>
+  <title>Nginx反向代理registry.npmjs.org | Sagrada</title>
   
 
 
@@ -156,7 +156,7 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Hexo</span>
+        <span class="site-title">Sagrada</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -262,7 +262,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="Sagrada">
     </span>
 
     
@@ -320,8 +320,9 @@
       
 
       
-         <span id="more"></span>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen     443 ssl;</span><br><span class="line">    listen [::]:443 ssl;</span><br><span class="line">    server_name  _;</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass https://registry.npmjs.org/;</span><br><span class="line">        proxy_set_header Accept-Encoding &quot;&quot;;</span><br><span class="line">        proxy_set_header Host registry.npmjs.org;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line">        proxy_cache_bypass $http_upgrade;</span><br><span class="line">        proxy_redirect off;</span><br><span class="line">        sub_filter_once off;</span><br><span class="line">        sub_filter_types application/vnd.npm.install-v1+json application/json;</span><br><span class="line">        sub_filter &#x27;registry.npmjs.org&#x27; &#x27;npm.zzflying.cn&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>nginx需要启用–with-http_sub_module选项，使用<code>nginx -V</code>查看是否启用</p>
+<p>反向代理配置如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen     443 ssl;</span><br><span class="line">    listen [::]:443 ssl;</span><br><span class="line">    # 监听的域名</span><br><span class="line">    server_name  your.domian.com;</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass https://registry.npmjs.org/;</span><br><span class="line">        # 清空Accept-Encoding避免结果gzip，sub_filter读取到字节流无法生效</span><br><span class="line">        proxy_set_header Accept-Encoding &quot;&quot;;</span><br><span class="line">        proxy_set_header Host registry.npmjs.org;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line">        proxy_cache_bypass $http_upgrade;</span><br><span class="line">        proxy_redirect off;</span><br><span class="line">        # 更改所有匹配的结果</span><br><span class="line">        sub_filter_once off;</span><br><span class="line">        # npm返回时的content-type类型为application/vnd.npm.install-v1+json</span><br><span class="line">        sub_filter_types application/vnd.npm.install-v1+json application/json;</span><br><span class="line">        # 将info返回结果中的tarball地址更改为你的地址</span><br><span class="line">        sub_filter &#x27;registry.npmjs.org&#x27; &#x27;your.domian.com&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -423,10 +424,10 @@
               
               
               <div class="site-state-item site-state-tags">
-                
+                <a href="/tags/index.html">
                   <span class="site-state-item-count">1</span>
                   <span class="site-state-item-name">标签</span>
-                
+                </a>
               </div>
             
 
